@@ -1,24 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { SecondsCounter } from './SecondsCounter';
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
+
+	const [counter, setCounter] = useState(0);
+
+
+	const updateCounter = () => {
+		setCounter((prevCounter) => prevCounter + 1);
+	};
+
+
+	useEffect(() => {
+		const interval = setInterval(updateCounter, 1000);
+
+
+		return () => clearInterval(interval);
+	}, []);
+
+	const units = counter % 10;
+	const tens = Math.floor(counter / 10) % 10;
+	const hundreds = Math.floor(counter / 100) % 10;
+	const thousands = Math.floor(counter / 1000) % 10;
+	const tenThousands = Math.floor(counter / 10000) % 10;
+	const hundredThousands = Math.floor(counter / 100000) % 10;
+
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="container text-center my-4">
+			<h1>Counter</h1>
+			<div className="d-flex justify-content-center align-items-center">
+				<div className="digit box bg-dark">
+					<i className="fas fa-clock"></i>
+				</div>
+
+				<SecondsCounter
+					units={units}
+					tens={tens}
+					hundreds={hundreds}
+					thousands={thousands}
+					tenThousands={tenThousands}
+					hundredThousands={hundredThousands}
+				/>
+			</div>
 		</div>
 	);
 };
